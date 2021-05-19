@@ -1,6 +1,14 @@
 ###################
 # compiled source #
 ###################
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+obj
+bin
+appsettings.Development.json
 *.com
 *.class
 *.dll
