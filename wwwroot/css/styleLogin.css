@@ -1,0 +1,24 @@
+.login__datos {
+    width: 1000px;
+}
+
+
+
+body {
+    display: flex;
+    justify-content: center;
+}
+
+
+
+.login {
+    background-color: bisque;
+    width: 500px;
+    height: 250px;
+    border-radius: 7px;
+    border-style: solid;
+    border-width: 2px;
+    margin-top: 180px;
+    padding-top: 70px;
+    padding-left: 40px;
+}

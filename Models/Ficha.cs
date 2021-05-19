@@ -22,8 +22,8 @@ namespace SolucionCacao.Models
         public int? Fruto { get; set; }
         public int? Incidencia { get; set; }
         [Required(ErrorMessage = "Campo Obligatorio")]
-        [Display(Name = "Cédula")]
-        [RegularExpression("[0-1]", ErrorMessage = "La cédula ingresada debe contener 10 dígitos")]
+        [Display(Name = "Severidad")]
+        [RegularExpression("[0-1]", ErrorMessage = "La severidad debe ser 0 ó 1")]
         public int? Severidad { get; set; }
         [Required(ErrorMessage = "Campo Obligatorio")]
         public DateTime? Fecha { get; set; }

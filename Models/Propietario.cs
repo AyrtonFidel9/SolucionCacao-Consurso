@@ -15,6 +15,7 @@ namespace SolucionCacao.Models
         [Required(ErrorMessage = "Campo Obligatorio")]
         [Display(Name = "Cédula")]
         [RegularExpression("[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]", ErrorMessage = "La cédula ingresada debe contener 10 dígitos")]
+
         public string Cedula { get; set; }
         [Required(ErrorMessage = "Campo Obligatorio")]
         [Display(Name = "Celular")]
