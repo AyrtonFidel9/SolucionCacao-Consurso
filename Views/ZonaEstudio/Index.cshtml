@@ -1,0 +1,59 @@
+@model IEnumerable<SolucionCacao.Models.ZonaEstudio>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.IdPropietario)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Lugar)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Coordenadas)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cultivo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Densidad)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdPropietario)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Lugar)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Coordenadas)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cultivo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Densidad)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

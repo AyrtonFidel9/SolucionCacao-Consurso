@@ -1,0 +1,53 @@
+@model SolucionCacao.Models.Tecnico
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Tecnico</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Id" class="control-label"></label>
+                <input asp-for="Id" class="form-control" />
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Nombres" class="control-label"></label>
+                <input asp-for="Nombres" class="form-control" />
+                <span asp-validation-for="Nombres" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Correo" class="control-label"></label>
+                <input asp-for="Correo" class="form-control" />
+                <span asp-validation-for="Correo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cargo" class="control-label"></label>
+                <input asp-for="Cargo" class="form-control" />
+                <span asp-validation-for="Cargo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Contacto" class="control-label"></label>
+                <input asp-for="Contacto" class="form-control" />
+                <span asp-validation-for="Contacto" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
