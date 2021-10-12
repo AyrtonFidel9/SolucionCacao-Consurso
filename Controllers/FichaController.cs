@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +11,7 @@ using SolucionCacao.Models;
 
 namespace SolucionCacao.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class FichaController : Controller
     {
         private readonly db_concursoContext _context;
@@ -26,7 +29,7 @@ namespace SolucionCacao.Controllers
         }
 
         // GET: Ficha/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string id)
         {
             if (id == null)
             {
@@ -36,7 +39,7 @@ namespace SolucionCacao.Controllers
             var ficha = await _context.Fichas
                 .Include(f => f.IdTecnicoNavigation)
                 .Include(f => f.IdZonaNavigation)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.Id.Equals(id));
             if (ficha == null)
             {
                 return NotFound();
@@ -48,7 +51,7 @@ namespace SolucionCacao.Controllers
         // GET: Ficha/Create
         public IActionResult Create()
         {
-            ViewData["IdTecnico"] = new SelectList(_context.Tecnicos, "Id", "Id");
+            ViewData["IdTecnico"] = new SelectList(_context.Tecnicos, "Id", "Nombres");
             ViewData["IdZona"] = new SelectList(_context.ZonaEstudios, "Id", "Lugar");
             return View();
         }
@@ -58,21 +61,22 @@ namespace SolucionCacao.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,IdTecnico,IdZona,Arbol,Fruto,Incidencia,Severidad,Fecha")] Ficha ficha)
+        public async Task<IActionResult> Create( [Bind("Id,IdTecnico,IdZona,idLineaFichasNavigation,Fecha, NombreFicha")] Ficha ficha)
         {
             if (ModelState.IsValid)
             {
+                ficha.Id = Guid.NewGuid().ToString();
                 _context.Add(ficha);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdTecnico"] = new SelectList(_context.Tecnicos, "Id", "Id", ficha.IdTecnico);
+            ViewData["IdTecnico"] = new SelectList(_context.Tecnicos, "Id", "Nombres", ficha.IdTecnico);
             ViewData["IdZona"] = new SelectList(_context.ZonaEstudios, "Id", "Lugar", ficha.IdZona);
             return View(ficha);
         }
 
         // GET: Ficha/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
             {
@@ -84,7 +88,7 @@ namespace SolucionCacao.Controllers
             {
                 return NotFound();
             }
-            ViewData["IdTecnico"] = new SelectList(_context.Tecnicos, "Id", "Id", ficha.IdTecnico);
+            ViewData["IdTecnico"] = new SelectList(_context.Tecnicos, "Id", "Nombres", ficha.IdTecnico);
             ViewData["IdZona"] = new SelectList(_context.ZonaEstudios, "Id", "Lugar", ficha.IdZona);
             return View(ficha);
         }
@@ -94,7 +98,7 @@ namespace SolucionCacao.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,IdTecnico,IdZona,Arbol,Fruto,Incidencia,Severidad,Fecha")] Ficha ficha)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,IdTecnico,IdZona,idLineaFichasNavigation,Fecha, NombreFicha")] Ficha ficha)
         {
             if (id != ficha.Id)
             {
@@ -121,13 +125,13 @@ namespace SolucionCacao.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdTecnico"] = new SelectList(_context.Tecnicos, "Id", "Id", ficha.IdTecnico);
+            ViewData["IdTecnico"] = new SelectList(_context.Tecnicos, "Id", "Nombres", ficha.IdTecnico);
             ViewData["IdZona"] = new SelectList(_context.ZonaEstudios, "Id", "Lugar", ficha.IdZona);
             return View(ficha);
         }
 
         // GET: Ficha/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
             {
@@ -149,17 +153,17 @@ namespace SolucionCacao.Controllers
         // POST: Ficha/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var ficha = await _context.Fichas.FindAsync(id);
             _context.Fichas.Remove(ficha);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
-        private bool FichaExists(int id)
+        
+        private bool FichaExists(string id)
         {
-            return _context.Fichas.Any(e => e.Id == id);
+            return _context.Fichas.Any(e => e.Id.Equals(id));
         }
     }
 }

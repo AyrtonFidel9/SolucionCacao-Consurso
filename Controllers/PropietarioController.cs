@@ -25,7 +25,7 @@ namespace SolucionCacao.Controllers
         }
 
         // GET: Propietario/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string id)
         {
             if (id == null)
             {
@@ -33,7 +33,7 @@ namespace SolucionCacao.Controllers
             }
 
             var propietario = await _context.Propietarios
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.Id.Equals(id));
             if (propietario == null)
             {
                 return NotFound();
@@ -53,10 +53,11 @@ namespace SolucionCacao.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nombre,Cedula,Celular")] Propietario propietario)
+        public async Task<IActionResult> Create([Bind("Nombre,Cedula,Celular")] Propietario propietario)
         {
             if (ModelState.IsValid)
             {
+                propietario.Id = Guid.NewGuid().ToString();
                 _context.Add(propietario);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -65,7 +66,7 @@ namespace SolucionCacao.Controllers
         }
 
         // GET: Propietario/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
             {
@@ -85,7 +86,7 @@ namespace SolucionCacao.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Cedula,Celular")] Propietario propietario)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,Nombre,Cedula,Celular")] Propietario propietario)
         {
             if (id != propietario.Id)
             {
@@ -116,7 +117,7 @@ namespace SolucionCacao.Controllers
         }
 
         // GET: Propietario/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
             {
@@ -124,7 +125,7 @@ namespace SolucionCacao.Controllers
             }
 
             var propietario = await _context.Propietarios
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.Id.Equals(id));
             if (propietario == null)
             {
                 return NotFound();
@@ -136,7 +137,7 @@ namespace SolucionCacao.Controllers
         // POST: Propietario/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var propietario = await _context.Propietarios.FindAsync(id);
             _context.Propietarios.Remove(propietario);
@@ -144,9 +145,9 @@ namespace SolucionCacao.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool PropietarioExists(int id)
+        private bool PropietarioExists(string id)
         {
-            return _context.Propietarios.Any(e => e.Id == id);
+            return _context.Propietarios.Any(e => e.Id.Equals(id));
         }
     }
 }

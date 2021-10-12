@@ -8,8 +8,7 @@ namespace SolucionCacao.Models
 {
     public partial class Propietario
     {
-        [Required(ErrorMessage = "Campo Obligatorio")]
-        public int Id { get; set; }
+        public string Id { get; set; }
         [Required(ErrorMessage = "Campo Obligatorio")]
         public string Nombre { get; set; }
         [Required(ErrorMessage = "Campo Obligatorio")]

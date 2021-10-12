@@ -1,47 +1,31 @@
+@model SolucionCacao.Models.Login
+
 @{
-
     ViewData["Title"] = "Inició de Sesión";
-
     Layout = "_LoginLayout";
-
 }
-
-
-
 <link rel="stylesheet" href="~/css/styleLogin.css">
-
-
-
-<div class="login">
-
-    <div class="login__datos row">
-
-        <label for="username" class="col-sm-2 col-form-label">Usuario</label>
-
-        <br>
-
-        <div class="col-sm-3">
-
-            <input type="text" class="form-control" id="username">
-
-        </div>
-
-    </div>
-
-    <br>
-
-    <div class="login__datos row">
-
-        <label for="inputPassword" class="col-sm-2 col-form-label">Contraseña</label><br>
-
-        <br>
-
-        <div class="col-sm-3">
-
-            <input type="password" class="form-control" id="inputPassword">
-
-        </div>
-
-    </div>
-
+<div class="row">
+    <div class="col-md-4">
+        <form class="login row" asp-action="Index">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="mb-3 row">
+                <label asp-for="Usuario" class="col-sm-3 col-form-label form-label">Usuario</label>
+                <div class="col-sm-8">
+                    <input asp-for="Usuario" type="text" class="form-control" id="Usuario">
+                </div>
+                <span asp-validation-for="Usuario" class="text-danger"></span>
+            </div>
+            <div class="mb-3 row">
+                <label asp-for="Password" class="col-sm-3 col-form-label for-label">Contraseña</label>
+                <div class="col-sm-8">
+                    <input asp-for="Password" type="password" class="form-control" id="Password">
+                </div>
+                <span asp-validation-for="Password" class="text-danger"></span>  
+            </div>
+            <div class="form-group button-group" >   
+                <input type="submit" value="Ingresar" class="button-group__btn btn btn-primary" />
+            </div>
+        </form>
     <div />
+<div />

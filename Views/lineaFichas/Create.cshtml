@@ -1,0 +1,54 @@
+@model SolucionCacao.Models.lineaFichas
+
+@{
+    ViewData["Title"] = "Create";
+    string id = Convert.ToString(ViewData["IdFicha"]);
+}
+<h3>Crear item</h3>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" class="row g-3">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="IdFicha" class="control-label">Ficha</label>
+                <select asp-for="IdFicha" class="form-control" asp-items="(SelectList)@ViewData["Ficha"]"></select>
+                <span asp-validation-for="IdFicha" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Arbol" class="control-label"></label>
+                <input asp-for="Arbol" class="form-control" />
+                <span asp-validation-for="Arbol" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Fruto" class="control-label"></label>
+                <input asp-for="Fruto" class="form-control" />
+                <span asp-validation-for="Fruto" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Incidencia" class="control-label"></label>
+                <input asp-for="Incidencia" class="form-control" />
+                <span asp-validation-for="Incidencia" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Severidad" class="control-label"></label>
+                <input asp-for="Severidad" class="form-control" />
+                <span asp-validation-for="Severidad" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Fecha" class="control-label"></label>
+                <input asp-for="Fecha" class="form-control" />
+                <span asp-validation-for="Fecha" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary"/>
+                <a asp-action="Index" asp-route-id="@id" class="btn btn-outline-secondary">Regresar a la Lista</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

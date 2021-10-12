@@ -25,7 +25,7 @@ namespace SolucionCacao.Controllers
         }
 
         // GET: Tecnico/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string id)
         {
             if (id == null)
             {
@@ -33,7 +33,7 @@ namespace SolucionCacao.Controllers
             }
 
             var tecnico = await _context.Tecnicos
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.Id.Equals(id));
             if (tecnico == null)
             {
                 return NotFound();
@@ -53,10 +53,11 @@ namespace SolucionCacao.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nombres,Correo,Cargo,Contacto")] Tecnico tecnico)
+        public async Task<IActionResult> Create([Bind("Nombres,Correo,Cargo,Contacto")] Tecnico tecnico)
         {
             if (ModelState.IsValid)
             {
+                tecnico.Id = Guid.NewGuid().ToString();
                 _context.Add(tecnico);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -65,7 +66,7 @@ namespace SolucionCacao.Controllers
         }
 
         // GET: Tecnico/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
             {
@@ -85,9 +86,9 @@ namespace SolucionCacao.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombres,Correo,Cargo,Contacto")] Tecnico tecnico)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,Nombres,Correo,Cargo,Contacto")] Tecnico tecnico)
         {
-            if (id != tecnico.Id)
+            if (!id.Equals(tecnico.Id))
             {
                 return NotFound();
             }
@@ -116,7 +117,7 @@ namespace SolucionCacao.Controllers
         }
 
         // GET: Tecnico/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
             {
@@ -124,7 +125,7 @@ namespace SolucionCacao.Controllers
             }
 
             var tecnico = await _context.Tecnicos
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.Id.Equals(id));
             if (tecnico == null)
             {
                 return NotFound();
@@ -136,7 +137,7 @@ namespace SolucionCacao.Controllers
         // POST: Tecnico/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var tecnico = await _context.Tecnicos.FindAsync(id);
             _context.Tecnicos.Remove(tecnico);
@@ -144,9 +145,9 @@ namespace SolucionCacao.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool TecnicoExists(int id)
+        private bool TecnicoExists(string id)
         {
-            return _context.Tecnicos.Any(e => e.Id == id);
+            return _context.Tecnicos.Any(e => e.Id.Equals(id));
         }
     }
 }

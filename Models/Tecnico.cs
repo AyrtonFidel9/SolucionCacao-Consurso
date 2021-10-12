@@ -13,10 +13,13 @@ namespace SolucionCacao.Models
             Fichas = new HashSet<Ficha>();
         }
 
+        public string Id { get; set; }
         [Required(ErrorMessage = "Campo Obligatorio")]
-        public int Id { get; set; }
+
         public string Nombres { get; set; }
         [Required(ErrorMessage = "Campo Obligatorio")]
+        [EmailAddress(ErrorMessage = "El correo ingresado no es válido, siga el ejemplo: abc@mail.co")]
+        //[RegularExpression("^[a-zA-Z0-9_\\.-]+@([a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$", ErrorMessage = "El correo ingresado no es válido, siga el ejemplo: abc@mail.co")]
         public string Correo { get; set; }
         [Required(ErrorMessage = "Campo Obligatorio")]
         public string Cargo { get; set; }

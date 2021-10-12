@@ -1,0 +1,64 @@
+@model IEnumerable<SolucionCacao.Models.lineaFichas>
+
+@{
+    ViewData["Title"] = "Index";
+    string id = Convert.ToString(ViewData["IdFicha"]);
+    /*foreach(var i in Model)
+    {
+        id = i.IdFicha;
+        break;
+    }*/
+}
+
+<h1>Items</h1>  
+<p>
+    <a asp-action="Create" asp-route-id="@id" class="btn btn-primary">Agregar Nuevo Item</a>
+</p>
+<table class="table table-success table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Arbol)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fruto)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Incidencia)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Severidad)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fecha)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Arbol)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fruto)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Incidencia)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Severidad)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fecha)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Editar</a> 
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Detalles</a> 
+                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Eliminar</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

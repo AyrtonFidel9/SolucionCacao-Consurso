@@ -3,36 +3,15 @@
 @{
     ViewData["Title"] = "Details";
 }
-
-<h1>Details</h1>
-
 <div>
-    <h4>Ficha</h4>
+    <h2>Detalle de la Ficha</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Arbol)
+            @Html.DisplayNameFor(model => model.NombreFicha)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Arbol)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Fruto)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Fruto)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Incidencia)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Incidencia)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Severidad)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Severidad)
+            @Html.DisplayFor(model => model.NombreFicha)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Fecha)
@@ -41,13 +20,13 @@
             @Html.DisplayFor(model => model.Fecha)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IdTecnicoNavigation)
+            Técnico a cargo
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IdTecnicoNavigation.Id)
+            @Html.DisplayFor(model => model.IdTecnicoNavigation.Nombres)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IdZonaNavigation)
+            Zona de Estudio
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.IdZonaNavigation.Lugar)
@@ -55,6 +34,6 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Editar</a> 
+    <a asp-action="Index" class="btn btn-outline-secondary">Regresar</a>
 </div>

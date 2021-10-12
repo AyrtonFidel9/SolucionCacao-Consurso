@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 #nullable disable
 
@@ -8,27 +9,28 @@ namespace SolucionCacao.Models
 {
     public partial class Ficha
     {
-        [Required(ErrorMessage = "Campo Obligatorio")]
-        public int Id { get; set; }
+        [Key]
+        public string Id { get; set; }
         [Required(ErrorMessage = "Campo Obligatorio")]
         [Display(Name = "Técnico responsable")]
-        public int? IdTecnico { get; set; }
+        public string IdTecnico { get; set; }
+        
         [Required(ErrorMessage = "Campo Obligatorio")]
         [Display(Name = "Zona de Estudio")]
-        public int? IdZona { get; set; }
+        public string IdZona { get; set; }
+        
         [Required(ErrorMessage = "Campo Obligatorio")]
-        public int? Arbol { get; set; }
+        [Display(Name = "Nombre")]
+        public string NombreFicha { get; set; }
         [Required(ErrorMessage = "Campo Obligatorio")]
-        public int? Fruto { get; set; }
-        public int? Incidencia { get; set; }
-        [Required(ErrorMessage = "Campo Obligatorio")]
-        [Display(Name = "Severidad")]
-        [RegularExpression("[0-1]", ErrorMessage = "La severidad debe ser 0 ó 1")]
-        public int? Severidad { get; set; }
-        [Required(ErrorMessage = "Campo Obligatorio")]
+        [Display(Name = "Fecha creación")]
         public DateTime? Fecha { get; set; }
-
+        [ForeignKey("IdTecnico")]
         public virtual Tecnico IdTecnicoNavigation { get; set; }
+        [ForeignKey("IdZona")]
         public virtual ZonaEstudio IdZonaNavigation { get; set; }
+        [NotMapped]
+        [ForeignKey("IdLineaFichas")]
+        public lineaFichas idLineaFichasNavigation {get; set;}
     }
 }

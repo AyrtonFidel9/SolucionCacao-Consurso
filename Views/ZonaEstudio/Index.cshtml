@@ -4,16 +4,16 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Lugares -<i>(Zona de estudio)</i></h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" type="button" class="btn btn-primary">Crear Nuevo</a>
 </p>
-<table class="table">
+<table class="table table-success table-striped table-bordered">
     <thead>
-        <tr>
+        <tr class="table-success">
             <th>
-                @Html.DisplayNameFor(model => model.IdPropietario)
+                Propietario
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Lugar)
@@ -34,7 +34,7 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.IdPropietario)
+                @Html.DisplayFor(modelItem => item.propietario.Nombre)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Lugar)
@@ -49,9 +49,9 @@
                 @Html.DisplayFor(modelItem => item.Densidad)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.Id" type="button" class="btn btn-warning">Editar</a> 
+                <a asp-action="Details" asp-route-id="@item.Id" type="button" class="btn btn-info">Detalle</a> 
+                <a asp-action="Delete" asp-route-id="@item.Id" type="button" class="btn btn-danger">Eliminar</a>
             </td>
         </tr>
 }

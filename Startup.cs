@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using SolucionCacao.Models;
 
 namespace SolucionCacao
@@ -26,10 +28,15 @@ namespace SolucionCacao
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            string connString = ConfigurationExtensions.GetConnectionString(this.Configuration, "DefaultConnectionString"); 
-                                services.AddDbContext<db_concursoContext>(options => options.UseSqlServer(connString));
-        }
+            //string connString = ConfigurationExtensions.GetConnectionString(this.Configuration, "DefaultConnectionString"); 
+            //                    services.AddDbContext<db_concursoContext>(options => options.UseSqlServer(connString));
+            services.AddDbContext<db_concursoContext>(
+                options => options.UseInMemoryDatabase(databaseName: "testDB")
+            );
+            services.AddIdentity<IdentityUser,IdentityRole>()
+                .AddEntityFrameworkStores<db_concursoContext>();
 
+        }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -50,11 +57,13 @@ namespace SolucionCacao
 
             app.UseAuthorization();
 
+            app.UseAuthentication();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Login}/{action=Index}");
             });
         }
     }
