@@ -1,0 +1,27 @@
+
+@model SolucionCacao.ViewModels.RolEliminarViewModel
+
+@{
+    ViewData["Title"] = "Eliminar Rol";
+}
+
+<h3>¿Está seguro de eliminar este Rol?</h3>
+@if(TempData["mensaje"] != null)
+{
+   @Html.Raw(TempData["mensaje"].ToString())
+}
+<div>
+   <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+    </dl>
+    
+    <form asp-action="DeleteRol" asp-route-id="@Model.Id">
+        <input type="submit" value="Eliminar" class="btn btn-danger" /> 
+        <a asp-action="Index" asp-controller="Home" class="btn btn-outline-secondary">Regresar</a>
+    </form>
+</div>

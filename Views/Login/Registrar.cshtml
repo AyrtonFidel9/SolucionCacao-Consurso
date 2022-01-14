@@ -1,0 +1,47 @@
+@model SolucionCacao.ViewModels.RegistrarViewModel
+
+@{
+    ViewData["Title"] = "Agregar usuario";
+}
+
+<h1>Crear Usuario</h1>
+
+<hr />
+@if(TempData["mensaje"] != null)
+{
+   @Html.Raw(TempData["mensaje"].ToString())
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Registrar" class="row g-3">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Usuario" class="control-label">Usuario</label>
+                <input asp-for="Usuario" class="form-control"/>
+                <span asp-validation-for="Usuario" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cargo" class="control-label"></label>
+                <select asp-for="Cargo" class="form-select" asp-items="(SelectList)@ViewData["Cargos"]">
+                    <option>Seleccione un cargo</option>
+                </select>
+                <span asp-validation-for="Cargo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input type="password" asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Registrar" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-outline-secondary">Iniciar sesón</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,39 @@
+
+@model SolucionCacao.ViewModels.EliminarViewModel
+
+@{
+    ViewData["Title"] = "Eliminar Usuario";
+}
+
+<h3>¿Está seguro de eliminar este item?</h3>
+<div>
+@if(TempData["mensaje"] != null)
+{
+   @Html.Raw(TempData["mensaje"].ToString())
+}
+   <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Usuario)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Usuario)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Correo)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Correo)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Numero)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Numero)
+        </dd>
+    </dl>
+    
+    <form asp-action="DeleteUser" asp-route-id="@Model.Id">
+        <input type="submit" value="Eliminar" class="btn btn-danger" /> 
+        <a asp-action="Index" asp-controller="Home" class="btn btn-outline-secondary">Regresar</a>
+    </form>
+</div>

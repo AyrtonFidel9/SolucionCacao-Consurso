@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ using SolucionCacao.Models;
 
 namespace SolucionCacao.Controllers
 {
+    [Authorize]
     public class ZonaEstudioController : Controller
     {
         private readonly db_concursoContext _context;
@@ -19,6 +21,7 @@ namespace SolucionCacao.Controllers
         }
 
         // GET: ZonaEstudio
+        [Authorize(Roles ="Admin, Tecnico, Propietario")]
         public async Task<IActionResult> Index()
         {
             var lista_completa = _context.ZonaEstudios.Include(t => t.propietario);
@@ -34,7 +37,8 @@ namespace SolucionCacao.Controllers
 
             return View(await lista_completa.ToListAsync());
         }
-
+        
+        [Authorize(Roles ="Admin, Tecnico, Propietario")]
         // GET: ZonaEstudio/Details/5
         public async Task<IActionResult> Details(string id)
         {
@@ -55,6 +59,7 @@ namespace SolucionCacao.Controllers
         }
 
         // GET: ZonaEstudio/Create
+        [Authorize(Roles ="Admin, Tecnico")]
         public IActionResult Create()
         {
             var vm = new ZonaEstudio();
@@ -71,6 +76,7 @@ namespace SolucionCacao.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles ="Admin, Tecnico")]
         public async Task<IActionResult> Create([Bind("Id,IdPropietario,Lugar,Coordenadas,Cultivo,Densidad")] ZonaEstudio zonaEstudio)
         {
             zonaEstudio.Id = Guid.NewGuid().ToString();
@@ -105,6 +111,7 @@ namespace SolucionCacao.Controllers
         }
 
         // GET: ZonaEstudio/Edit/5
+        [Authorize(Roles ="Admin, Tecnico")]
         public async Task<IActionResult> Edit(string id)
         {
             //var lista_completa = _context.ZonaEstudios.Include(t => t.propietario);
@@ -131,6 +138,7 @@ namespace SolucionCacao.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles ="Admin, Tecnico")]
         public async Task<IActionResult> Edit(string id, [Bind("Id,IdPropietario,Lugar,Coordenadas,Cultivo,Densidad")] ZonaEstudio zonaEstudio)
         {
             if (!id.Equals(zonaEstudio.Id))
@@ -162,6 +170,7 @@ namespace SolucionCacao.Controllers
         }
 
         // GET: ZonaEstudio/Delete/5
+        [Authorize(Roles ="Admin, Tecnico")]
         public async Task<IActionResult> Delete(string id)
         {
             var lista_completa = _context.ZonaEstudios.Include(t => t.propietario);
@@ -183,6 +192,7 @@ namespace SolucionCacao.Controllers
         // POST: ZonaEstudio/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles ="Admin, Tecnico")]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var zonaEstudio = await _context.ZonaEstudios.FindAsync(id);

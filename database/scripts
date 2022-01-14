@@ -1,0 +1,158 @@
+
+--TECNICOS
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Tecnicos](
+	[Id] [nvarchar](450) NOT NULL,
+	[Nombres] [nvarchar](max) NOT NULL,
+	[Correo] [nvarchar](max) NOT NULL,
+	[Cargo] [nvarchar](max) NOT NULL,
+	[Contacto] [nvarchar](max) NOT NULL,
+ CONSTRAINT [PK_Tecnicos] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+--PROPIETARIOS
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Propietarios](
+	[Id] [nvarchar](450) NOT NULL,
+	[Nombre] [nvarchar](max) NOT NULL,
+	[Cedula] [nvarchar](max) NOT NULL,
+	[Celular] [nvarchar](max) NOT NULL,
+ CONSTRAINT [PK_Propietarios] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+--ZONA DE ESTUDIO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ZonaEstudios](
+	[Id] [nvarchar](450) NOT NULL,
+	[IdPropietario] [nvarchar](450) NOT NULL,
+	[Lugar] [nvarchar](max) NOT NULL,
+	[Coordenadas] [nvarchar](max) NOT NULL,
+	[Cultivo] [nvarchar](max) NOT NULL,
+	[Densidad] [int] NOT NULL,
+	[NombrePropietario] [nvarchar](max) NULL,
+ CONSTRAINT [PK_ZonaEstudios] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+CREATE NONCLUSTERED INDEX [IX_ZonaEstudios_IdPropietario] ON [dbo].[ZonaEstudios]
+(
+	[IdPropietario] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[ZonaEstudios]  WITH CHECK ADD  CONSTRAINT [FK_ZonaEstudios_Propietarios_IdPropietario] FOREIGN KEY([IdPropietario])
+REFERENCES [dbo].[Propietarios] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[ZonaEstudios] CHECK CONSTRAINT [FK_ZonaEstudios_Propietarios_IdPropietario]
+GO
+
+
+--FICHAS
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Fichas](
+	[Id] [nvarchar](450) NOT NULL,
+	[IdTecnico] [nvarchar](450) NOT NULL,
+	[IdZona] [nvarchar](450) NOT NULL,
+	[NombreFicha] [nvarchar](max) NOT NULL,
+	[Fecha] [datetime2](7) NOT NULL,
+	[lineaFichasId] [nvarchar](450) NULL,
+ CONSTRAINT [PK_Fichas] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+CREATE NONCLUSTERED INDEX [IX_Fichas_IdTecnico] ON [dbo].[Fichas]
+(
+	[IdTecnico] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+CREATE NONCLUSTERED INDEX [IX_Fichas_IdZona] ON [dbo].[Fichas]
+(
+	[IdZona] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+CREATE NONCLUSTERED INDEX [IX_Fichas_lineaFichasId] ON [dbo].[Fichas]
+(
+	[lineaFichasId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[Fichas]  WITH CHECK ADD  CONSTRAINT [FK_Fichas_lineaFichas_lineaFichasId] FOREIGN KEY([lineaFichasId])
+REFERENCES [dbo].[lineaFichas] ([Id])
+GO
+ALTER TABLE [dbo].[Fichas] CHECK CONSTRAINT [FK_Fichas_lineaFichas_lineaFichasId]
+GO
+ALTER TABLE [dbo].[Fichas]  WITH CHECK ADD  CONSTRAINT [FK_Fichas_Tecnicos_IdTecnico] FOREIGN KEY([IdTecnico])
+REFERENCES [dbo].[Tecnicos] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Fichas] CHECK CONSTRAINT [FK_Fichas_Tecnicos_IdTecnico]
+GO
+ALTER TABLE [dbo].[Fichas]  WITH CHECK ADD  CONSTRAINT [FK_Fichas_ZonaEstudios_IdZona] FOREIGN KEY([IdZona])
+REFERENCES [dbo].[ZonaEstudios] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Fichas] CHECK CONSTRAINT [FK_Fichas_ZonaEstudios_IdZona]
+GO
+
+
+
+--LINEA FICHAS
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[lineaFichas](
+	[Id] [nvarchar](450) NOT NULL,
+	[IdFicha] [nvarchar](max) NULL,
+	[Arbol] [int] NOT NULL,
+	[Fruto] [int] NOT NULL,
+	[Incidencia] [int] NOT NULL,
+	[Severidad] [int] NOT NULL,
+	[Fecha] [datetime2](7) NOT NULL,
+ CONSTRAINT [PK_lineaFichas] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+
+
+--INSERTAR TECNICO
+INSERT INTO [db_cacao].[dbo].[AspNetUsers] (Id,UserName,EmailConfirmed, PasswordHash,PhoneNumberConfirmed,TwoFactorEnabled,AccessFailedCount, LockoutEnabled) 
+VALUES('777be9c0-aa65-4af8-bd17-11bd9344e575','Tec',0, PWDENCRYPT('1234'),0,0,0,0)
+GO
+

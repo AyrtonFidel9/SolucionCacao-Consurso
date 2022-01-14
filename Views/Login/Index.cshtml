@@ -4,28 +4,63 @@
     ViewData["Title"] = "Inició de Sesión";
     Layout = "_LoginLayout";
 }
-<link rel="stylesheet" href="~/css/styleLogin.css">
-<div class="row">
-    <div class="col-md-4">
-        <form class="login row" asp-action="Index">
+
+<div>
+    @if(TempData["mensaje"] != null)
+    {   
+        <div class="alerta">
+            <p>@TempData["mensaje"]</p>
+        </div>
+    }    
+    <div class="container-fluid">
+        <form class="login row" asp-action="Index" asp-controller="Login" method="post"
+            asp-route-returnUrl="@ViewData["ReturnUrl"]">
+            <div class="mb-3 px-4 row">
+                <i class="fas fa-users icono"></i>
+            </div>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="mb-3 row">
-                <label asp-for="Usuario" class="col-sm-3 col-form-label form-label">Usuario</label>
+            <div class="mb-3 px-4 row">
+                <label asp-for="Usuario" class="col-sm-3 col-form-label form-label"> <b>Usuario</b></label>
                 <div class="col-sm-8">
                     <input asp-for="Usuario" type="text" class="form-control" id="Usuario">
+                    <span asp-validation-for="Usuario" class="text-danger" style="background: red;
+                                                                                border-radius: 3px 3px 0 0;
+                                                                                color: black !important; 
+                                                                                float: right;
+                                                                                font-size: 13px;
+                                                                                line-height: 16px;
+                                                                                margin-top: -17px;
+                                                                                padding: 0 5px;
+                                                                                text-align: right;
+                                                                                width: auto;"></span>
                 </div>
-                <span asp-validation-for="Usuario" class="text-danger"></span>
             </div>
-            <div class="mb-3 row">
-                <label asp-for="Password" class="col-sm-3 col-form-label for-label">Contraseña</label>
+            <div class="mb-3 px-4 row">
+                <label asp-for="Password" class="col-sm-3 col-form-label for-label"> <b>Contraseña</b></label>
                 <div class="col-sm-8">
                     <input asp-for="Password" type="password" class="form-control" id="Password">
+                    <span asp-validation-for="Password" class="text-danger" style="background: red;
+                                                                                border-radius: 3px 3px 0 0;
+                                                                                color: black !important; 
+                                                                                float: right;
+                                                                                font-size: 13px;
+                                                                                line-height: 16px;
+                                                                                margin-top: -17px;
+                                                                                padding: 0 5px;
+                                                                                text-align: right;
+                                                                                width: auto;"></span>
                 </div>
-                <span asp-validation-for="Password" class="text-danger"></span>  
             </div>
-            <div class="form-group button-group" >   
+            <div class="mb-3 px-5 row form-check">
+
+                <label class="form-check-label" asp-for="isPersistent">
+                    <input asp-for="isPersistent" class="form-check-input" type="checkbox" id="isPersistent">
+                    <b>Recuerdame</b>
+                </label>
+            </div>
+            <div class="form-group button-group">
                 <input type="submit" value="Ingresar" class="button-group__btn btn btn-primary" />
             </div>
         </form>
-    <div />
-<div />
+    </div>
+</div>

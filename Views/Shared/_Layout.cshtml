@@ -1,35 +1,79 @@
-﻿<!DOCTYPE html>
+﻿@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Solucion Cacao</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
+
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm text-white bg-success bg-gradient border-bottom box-shadow mb-3">
+        <nav
+            class="navbar navbar-expand-sm navbar-toggleable-sm text-white bg-success bg-gradient border-bottom box-shadow mb-3">
             <div class="container">
                 <a class="navbar-brand text-light" asp-area="" asp-controller="Home" asp-action="Index">Inicio</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Tecnico" asp-action="Index">Técnicos</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Tecnico"
+                                asp-action="Index">Técnicos</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Ficha" asp-action="Index">Fichas</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Ficha"
+                                asp-action="Index">Fichas</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="ZonaEstudio" asp-action="Index">Lugares</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="ZonaEstudio"
+                                asp-action="Index">Lugares</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Propietario" asp-action="Index">Propietarios</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Propietario"
+                                asp-action="Index">Propietarios</a>
                         </li>
+                        @if (@UserManager.GetUserName(User).Equals("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Login"
+                                asp-action="dashboard">Administración</a>
+                            </li>
+                        }
+                    </ul>
+                    <ul class="navbar-nav">
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <li class="nav-item">
+                                <a id="manage" class="nav-link text-light" asp-page="/Login/Index" title="Manage">Hola
+                                    @UserManager.GetUserName(User)!</a>
+                            </li>
+                            <li class="nav-item">
+                                <form id="logoutForm" class="form-inline" method="post" asp-controller="Login"
+                                asp-action="Logout">
+                                    <button id="logout" type="submit" class="nav-link btn btn-link text-light">Cerrar
+                                        Sesión</button>
+                                </form>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-light" id="register" asp-page="/Account/Register">Register</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" id="login" asp-controller="Login" asp-action="Index">Iniciar
+                                    sesión</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
@@ -53,4 +97,5 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
+
 </html>

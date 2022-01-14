@@ -1,0 +1,23 @@
+@{
+    ViewData["Title"] = "Dashboard";
+
+}
+<link rel="stylesheet" href="~/css/dashboard.css">
+<div class="menu">
+    <a class="option-tile"  asp-controller="Login"
+                                asp-action="CrearRoles">
+        <h2>Crear Rol</h2>
+    </a>
+    <a class="option-tile" asp-controller="Login"
+                                asp-action="Registrar">
+        <h2>Registrar Usuario</h2>
+    </a>
+    <a class="option-tile" asp-controller="Login"
+                                asp-action="BuscarUsuario">
+        <h2>Eliminar Usuario</h2>
+    </a>
+    <a class="option-tile" asp-controller="Login"
+                                asp-action="BuscarRol">
+        <h2>Eliminar Rol</h2>
+    </a>
+</div>

@@ -1,14 +1,20 @@
 using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SolucionCacao.Models;
+using Microsoft.AspNetCore.Identity.UI.Services;
+
 
 namespace SolucionCacao.Controllers
 {
+    [Authorize]
     public class TecnicoController : Controller
     {
         private readonly db_concursoContext _context;
@@ -19,12 +25,14 @@ namespace SolucionCacao.Controllers
         }
 
         // GET: Tecnico
+        [Authorize(Roles ="Admin, Tecnico, Propietario")]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Tecnicos.ToListAsync());
         }
 
         // GET: Tecnico/Details/5
+        [Authorize(Roles ="Admin, Tecnico, Propietario")]
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)
@@ -43,6 +51,7 @@ namespace SolucionCacao.Controllers
         }
 
         // GET: Tecnico/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
@@ -53,6 +62,7 @@ namespace SolucionCacao.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([Bind("Nombres,Correo,Cargo,Contacto")] Tecnico tecnico)
         {
             if (ModelState.IsValid)
@@ -66,6 +76,7 @@ namespace SolucionCacao.Controllers
         }
 
         // GET: Tecnico/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
@@ -86,6 +97,7 @@ namespace SolucionCacao.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(string id, [Bind("Id,Nombres,Correo,Cargo,Contacto")] Tecnico tecnico)
         {
             if (!id.Equals(tecnico.Id))
@@ -117,6 +129,7 @@ namespace SolucionCacao.Controllers
         }
 
         // GET: Tecnico/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)

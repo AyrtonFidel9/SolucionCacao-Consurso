@@ -11,6 +11,7 @@ namespace SolucionCacao.Models
 {
     public partial class db_concursoContext : IdentityDbContext
     {
+        //private readonly RoleManager<IdentityRole> gestionRol;
         //private readonly UserManager<IdentityUser> gestionUsuario;
         public db_concursoContext()
         {
@@ -28,7 +29,36 @@ namespace SolucionCacao.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            /*
+            const string ADMIN_ID = "777be9c0-aa65-4af8-bd17-11bd9344e575";
 
+            // any guid, but nothing is against to use the same one
+            const string ROLE_ID = ADMIN_ID;
+            modelBuilder.InsertData(
+                table: "IdentityRole",
+                columns: new []{"Id","Name","NormalizedName"},
+                values: new object[,]
+                {{ROLE_ID,"Tecnico", "Tecnico".ToUpper()}}
+            );
+
+            var hasher = new PasswordHasher<IdentityUser>();
+            modelBuilder.InsertData(
+                table: "IdentityUser",
+                columns: new[] {"Id","UserName","NormalizedUserName","Email","NormalizedEmail","EmailConfirmed","PasswordHash","SecurityStamp"},
+                values: new object[,]
+                {
+                    {ADMIN_ID, "Tec","Tec","tec@mail.com","tec@mail.com",true,hasher.HashPassword(null, "1234"),string.Empty}
+                }
+            );
+            modelBuilder.InsertData(
+                table: "IdentityUserRole",
+                columns: new []{"RoleId","UserId"},
+                values: new object[,]
+                {
+                    {"165e6c3a-e52b-4860-b58a-4810c68cd6c4", ADMIN_ID}
+                }
+            );
+            */
             seed(modelBuilder);
 
         }
@@ -99,15 +129,13 @@ namespace SolucionCacao.Models
         public virtual DbSet<Tecnico> Tecnicos { get; set; }
         public virtual DbSet<ZonaEstudio> ZonaEstudios { get; set; }
 
-        public virtual DbSet<IdentityUser> usuarios {get; set;}
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
                 //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                //optionsBuilder.UseSqlServer("Data Source=localhost;Initial Catalog=db_concurso;Integrated Security=True;");
-                optionsBuilder.UseInMemoryDatabase(databaseName: "testDB");
+                optionsBuilder.UseSqlServer("Data Source=localhost;Initial Catalog=db_cacao;Integrated Security=True;");
+                //optionsBuilder.UseInMemoryDatabase(databaseName: "testDB");
             }
         }
 

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ using SolucionCacao.Models;
 
 namespace SolucionCacao.Controllers
 {
+    [Authorize]
     public class PropietarioController : Controller
     {
         private readonly db_concursoContext _context;
@@ -19,12 +21,14 @@ namespace SolucionCacao.Controllers
         }
 
         // GET: Propietario
+        [Authorize(Roles ="Admin, Tecnico, Propietario")]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Propietarios.ToListAsync());
         }
 
         // GET: Propietario/Details/5
+        [Authorize(Roles ="Admin, Tecnico, Propietario")]
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)
@@ -43,6 +47,7 @@ namespace SolucionCacao.Controllers
         }
 
         // GET: Propietario/Create
+        [Authorize(Roles ="Admin, Tecnico")]
         public IActionResult Create()
         {
             return View();
@@ -53,6 +58,7 @@ namespace SolucionCacao.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles ="Admin, Tecnico")]
         public async Task<IActionResult> Create([Bind("Nombre,Cedula,Celular")] Propietario propietario)
         {
             if (ModelState.IsValid)
@@ -66,6 +72,7 @@ namespace SolucionCacao.Controllers
         }
 
         // GET: Propietario/Edit/5
+        [Authorize(Roles ="Admin, Tecnico")]
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
@@ -86,6 +93,7 @@ namespace SolucionCacao.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles ="Admin, Tecnico")]
         public async Task<IActionResult> Edit(string id, [Bind("Id,Nombre,Cedula,Celular")] Propietario propietario)
         {
             if (id != propietario.Id)
@@ -117,6 +125,7 @@ namespace SolucionCacao.Controllers
         }
 
         // GET: Propietario/Delete/5
+        [Authorize(Roles ="Admin, Tecnico")]
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
@@ -137,6 +146,7 @@ namespace SolucionCacao.Controllers
         // POST: Propietario/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles ="Admin, Tecnico")]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var propietario = await _context.Propietarios.FindAsync(id);

@@ -1,0 +1,36 @@
+.menu{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.option-tile{
+    width: 18rem;
+    height: 7rem;
+    color: whitesmoke;
+    border-radius: 0.5rem;
+    border-style: solid;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    margin: 35px;
+    border-color: transparent;
+    text-decoration: none;
+    transition: all 200ms linear;
+    background-color: #198754;
+    animation-duration: 3s;
+    animation-name: slidein;
+}
+
+.option-tile:hover{
+    cursor: pointer;
+    /*border-bottom: solid;
+    border-color: cornsilk;*/
+    background-color: transparent;
+    color: rgb(29, 28, 28);
+    border-color: #198754;
+    font-weight: bolder;
+}
+
+
+
+

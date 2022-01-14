@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,10 +9,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SolucionCacao.Models;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace SolucionCacao.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     public class FichaController : Controller
     {
         private readonly db_concursoContext _context;
@@ -22,6 +24,7 @@ namespace SolucionCacao.Controllers
         }
 
         // GET: Ficha
+        [Authorize(Roles ="Admin, Tecnico, Propietario")]
         public async Task<IActionResult> Index()
         {
             var db_concursoContext = _context.Fichas.Include(f => f.IdTecnicoNavigation).Include(f => f.IdZonaNavigation);
@@ -29,6 +32,7 @@ namespace SolucionCacao.Controllers
         }
 
         // GET: Ficha/Details/5
+        [Authorize(Roles ="Admin, Tecnico, Propietario")]
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)
@@ -49,6 +53,7 @@ namespace SolucionCacao.Controllers
         }
 
         // GET: Ficha/Create
+        [Authorize(Roles = "Admin, Tecnico")]
         public IActionResult Create()
         {
             ViewData["IdTecnico"] = new SelectList(_context.Tecnicos, "Id", "Nombres");
@@ -61,6 +66,7 @@ namespace SolucionCacao.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, Tecnico")]
         public async Task<IActionResult> Create( [Bind("Id,IdTecnico,IdZona,idLineaFichasNavigation,Fecha, NombreFicha")] Ficha ficha)
         {
             if (ModelState.IsValid)
@@ -76,6 +82,7 @@ namespace SolucionCacao.Controllers
         }
 
         // GET: Ficha/Edit/5
+        [Authorize(Roles = "Admin, Tecnico")]
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
@@ -98,6 +105,7 @@ namespace SolucionCacao.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, Tecnico")]
         public async Task<IActionResult> Edit(string id, [Bind("Id,IdTecnico,IdZona,idLineaFichasNavigation,Fecha, NombreFicha")] Ficha ficha)
         {
             if (id != ficha.Id)
@@ -131,6 +139,7 @@ namespace SolucionCacao.Controllers
         }
 
         // GET: Ficha/Delete/5
+        [Authorize(Roles = "Admin, Tecnico")]
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)

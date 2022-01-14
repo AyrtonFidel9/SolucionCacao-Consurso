@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ using SolucionCacao.Models;
 
 namespace SolucionCacao.Controllers
 {
+    [Authorize]
     public class lineaFichasController : Controller
     {
         private readonly db_concursoContext _context;
@@ -19,6 +21,7 @@ namespace SolucionCacao.Controllers
         }
 
         // GET: lineaFichas
+        [Authorize(Roles ="Admin, Tecnico, Propietario")]
         public async Task<IActionResult> Index(string id)
         {
             var lineaFichasBus = _context.lineaFichas.Where(m => m.IdFicha.Equals(id));
@@ -31,6 +34,7 @@ namespace SolucionCacao.Controllers
         }
 
         // GET: lineaFichas/Details/5
+        [Authorize(Roles ="Admin, Tecnico, Propietario")]
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)
@@ -50,6 +54,7 @@ namespace SolucionCacao.Controllers
         }
 
         // GET: lineaFichas/Create
+        [Authorize(Roles ="Admin, Tecnico")]
         public IActionResult Create(string id)
         {
             ViewData["Ficha"] = new SelectList(_context.Fichas.Where(t => t.Id.Equals(id)), "Id","NombreFicha");
@@ -62,6 +67,7 @@ namespace SolucionCacao.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles ="Admin, Tecnico")]
         public async Task<IActionResult> Create([Bind("Id,Arbol,Fruto,Incidencia,Severidad,Fecha,IdFicha")] lineaFichas lineaFichas)
         {
             if (ModelState.IsValid)
@@ -75,6 +81,7 @@ namespace SolucionCacao.Controllers
         }
 
         // GET: lineaFichas/Edit/5
+        [Authorize(Roles ="Admin, Tecnico")]
         public async Task<IActionResult> Edit(string id)
         {
             
@@ -99,6 +106,7 @@ namespace SolucionCacao.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles ="Admin, Tecnico")]
         public async Task<IActionResult> Edit(string id, [Bind("Id,Arbol,Fruto,Incidencia,Severidad,Fecha, IdFicha")] lineaFichas lineaFichas)
         {
             if (id != lineaFichas.Id)
@@ -130,6 +138,7 @@ namespace SolucionCacao.Controllers
         }
 
         // GET: lineaFichas/Delete/5
+        [Authorize(Roles ="Admin, Tecnico")]
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)

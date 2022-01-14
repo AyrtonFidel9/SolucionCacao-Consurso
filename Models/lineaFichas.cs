@@ -15,6 +15,7 @@ namespace SolucionCacao.Models
         [Key]
         public string Id {get; set;}
 
+        [ForeignKey("idFicha")]
         public string IdFicha {get; set;}
         [Required(ErrorMessage = "Campo Obligatorio")]
         public int? Arbol { get; set; }
@@ -33,8 +34,5 @@ namespace SolucionCacao.Models
         public DateTime? Fecha { get; set; }
 
         public virtual ICollection<Ficha> Fichas { get; set; }
-
-        [ForeignKey("idFicha")]
-        public Ficha Ficha {get; set;}
     }
 }
