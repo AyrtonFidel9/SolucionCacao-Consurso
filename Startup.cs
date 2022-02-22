@@ -44,9 +44,13 @@ namespace SolucionCacao
              );*/
             //services.AddDefaultIdentity<IdentityUser>().AddRoles<IdentityRole>()
             //    .AddEntityFrameworkStores<db_concursoContext>();
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<IdentityUser, IdentityRole>(options =>
+            {
+                options.Lockout.MaxFailedAccessAttempts = 3;
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
+            })
                 .AddEntityFrameworkStores<db_concursoContext>();
-            
+
             //services.AddRazorPages();
 
             /*services.AddIdentityServer(options =>
@@ -59,25 +63,37 @@ namespace SolucionCacao
             //services.AddMvc().AddFluentValidation();
             //services.AddTransient<IValidator<Login>, ValidateLogin>();
 
-            services.ConfigureApplicationCookie( options => {options.LoginPath = "/Login/Index";
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Login/Index";
                 options.Cookie.HttpOnly = true;
-                options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(1);
                 options.Cookie.Name = "CookieLogin";
                 options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
                 options.SlidingExpiration = true;
                 options.AccessDeniedPath = "/Login/ErrorDisp";
             });
 
-            services.Configure<RouteOptions>( options => {
+            services.Configure<RouteOptions>(options =>
+            {
                 options.LowercaseQueryStrings = true;
                 options.LowercaseUrls = true;
                 options.AppendTrailingSlash = true;
 
             });
+
+            services.ConfigureApplicationCookie(options =>
+            {   
+                options.Cookie.Name = "CookieName";         
+                options.ExpireTimeSpan = TimeSpan.FromHours(24);
+                options.SlidingExpiration = true;               
+            });
+
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -97,8 +113,9 @@ namespace SolucionCacao
 
             app.UseAuthentication();
 
-            app.UseMvc(routes => {
-                routes.MapRoute("default","{controller=Home}/{action=Index}/{id?}");
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });
 
             /*app.UseEndpoints(endpoints =>

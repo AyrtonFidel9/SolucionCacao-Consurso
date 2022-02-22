@@ -175,7 +175,7 @@ namespace SolucionCacao.Controllers
                 try
                 {
                     var role = gestionRol.FindByNameAsync(model.Rol);
-                    if(role!=null)
+                    if(role.Result!=null)
                     {
                         TempData["mensaje"]="<div class='alert alert-danger' role='alert'>Error, el rol ya existe</div>";
                         return View();
