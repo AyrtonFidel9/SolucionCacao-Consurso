@@ -67,10 +67,19 @@ namespace SolucionCacao.Controllers
         {
             if (ModelState.IsValid)
             {
-                tecnico.Id = Guid.NewGuid().ToString();
-                _context.Add(tecnico);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    tecnico.Id = Guid.NewGuid().ToString();
+                    _context.Add(tecnico);
+                    await _context.SaveChangesAsync();
+                    TempData["mensaje"] = "<div class='alert alert-success' role='alert'>El técnico "+tecnico.Nombres+" ha sido guardado correctamente</div>";
+                    return RedirectToAction(nameof(Index));
+                }
+                catch
+                {
+                    TempData["mensaje"] = "<div class='alert alert-danger' role='alert'>Ha ocurrido un error al crear un nuevo técnico, revise la información ingresada.</div>";
+                    return View(tecnico);
+                }
             }
             return View(tecnico);
         }
@@ -110,10 +119,12 @@ namespace SolucionCacao.Controllers
                 try
                 {
                     _context.Update(tecnico);
+                    TempData["mensaje"] = "<div class='alert alert-success' role='alert'>El técnico "+tecnico.Nombres+" ha sido modificado correctamente</div>";
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
+                    TempData["mensaje"] = "<div class='alert alert-danger' role='alert'>Ha ocurrido un error al modificar los datos del técnico "+tecnico.Nombres+"</div>";
                     if (!TecnicoExists(tecnico.Id))
                     {
                         return NotFound();
@@ -153,8 +164,16 @@ namespace SolucionCacao.Controllers
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var tecnico = await _context.Tecnicos.FindAsync(id);
-            _context.Tecnicos.Remove(tecnico);
-            await _context.SaveChangesAsync();
+            try
+            {                
+                _context.Tecnicos.Remove(tecnico);
+                await _context.SaveChangesAsync();
+                TempData["mensaje"] = "<div class='alert alert-success' role='alert'>El técnico "+tecnico.Nombres+" ha sido eliminado correctamente</div>";
+            }
+            catch
+            {
+                TempData["mensaje"] = "<div class='alert alert-danger' role='alert'>El técnico "+tecnico.Nombres+" no se ha podido eliminar</div>";
+            }
             return RedirectToAction(nameof(Index));
         }
 

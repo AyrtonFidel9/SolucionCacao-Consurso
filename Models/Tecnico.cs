@@ -15,7 +15,7 @@ namespace SolucionCacao.Models
 
         public string Id { get; set; }
         [Required(ErrorMessage = "Campo Obligatorio")]
-
+        [RegularExpression("^[A-Za-z ]+$", ErrorMessage = "No se admitén números o dígitos")]
         public string Nombres { get; set; }
         [Required(ErrorMessage = "Campo Obligatorio")]
         [EmailAddress(ErrorMessage = "El correo ingresado no es válido, siga el ejemplo: abc@mail.co")]
