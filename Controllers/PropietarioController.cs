@@ -64,9 +64,17 @@ namespace SolucionCacao.Controllers
             if (ModelState.IsValid)
             {
                 propietario.Id = Guid.NewGuid().ToString();
-                _context.Add(propietario);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    _context.Add(propietario);
+                    await _context.SaveChangesAsync();
+                    TempData["mensaje"] = "<div class='alert alert-success' role='alert'>El propietario "+propietario.Nombre+" ha sido guardado correctamente</div>";
+                    return RedirectToAction(nameof(Index));
+                }
+                catch
+                {
+                    TempData["mensaje"] = "<div class='alert alert-danger' role='alert'>Error al intentar guardar los datos del propietario</div>";
+                }
             }
             return View(propietario);
         }
@@ -107,6 +115,7 @@ namespace SolucionCacao.Controllers
                 {
                     _context.Update(propietario);
                     await _context.SaveChangesAsync();
+                    TempData["mensaje"] = "<div class='alert alert-success' role='alert'>Los datos del propietario "+propietario.Nombre+" ha sido modificados correctamente</div>";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -121,6 +130,7 @@ namespace SolucionCacao.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            TempData["mensaje"] = "<div class='alert alert-danger' role='alert'>Error al modificar los datos del propietario</div>";
             return View(propietario);
         }
 
@@ -150,9 +160,18 @@ namespace SolucionCacao.Controllers
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var propietario = await _context.Propietarios.FindAsync(id);
-            _context.Propietarios.Remove(propietario);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                _context.Propietarios.Remove(propietario);
+                await _context.SaveChangesAsync();
+                TempData["mensaje"] = "<div class='alert alert-success' role='alert'>El propietario "+propietario.Nombre+" ha sido eliminado correctamente</div>";
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                TempData["mensaje"] = "<div class='alert alert-danger' role='alert'>Ocurrio un error al eliminar el propietario</div>";
+                return View(propietario);
+            }
         }
 
         private bool PropietarioExists(string id)

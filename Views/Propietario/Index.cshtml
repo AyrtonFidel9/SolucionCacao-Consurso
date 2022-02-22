@@ -6,6 +6,11 @@
 
 <h1>Propietarios</h1>
 
+@if(TempData["mensaje"] != null)
+{
+   @Html.Raw(TempData["mensaje"].ToString())
+}
+
 <p>
     <a asp-action="Create" class="btn btn-primary">Agregar propietario</a>
 </p>

@@ -10,6 +10,7 @@ namespace SolucionCacao.Models
     {
         public string Id { get; set; }
         [Required(ErrorMessage = "Campo Obligatorio")]
+        [RegularExpression("^[A-Za-z ]+$", ErrorMessage = "Solo se admiten caractéres.")]
         public string Nombre { get; set; }
         [Required(ErrorMessage = "Campo Obligatorio")]
         [Display(Name = "Cédula")]
