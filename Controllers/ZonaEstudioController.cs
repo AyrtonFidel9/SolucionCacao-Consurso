@@ -83,15 +83,24 @@ namespace SolucionCacao.Controllers
 
             if (ModelState.IsValid)
             {
-                if (zonaEstudio.IdPropietario != "Seleccione un propietario")
+                try
                 {
-                    _context.Add(zonaEstudio);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
-                }
-                else
+                    if (zonaEstudio.IdPropietario != "Seleccione un propietario")
+                    {
+                        _context.Add(zonaEstudio);
+                        await _context.SaveChangesAsync();
+                        TempData["mensaje"] = "<div class='alert alert-success' role='alert'>La zona de estudio de "+nombre_propietario(zonaEstudio.IdPropietario)+" ha sido registrada correctamente</div>";
+                        return RedirectToAction(nameof(Index));
+                    }
+                    else
+                    {
+                        TempData["mensaje"] = "<div class='alert alert-danger' role='alert'>Por favor, seleccione un propietario</div>";
+                        recargarSelectPropietarios (ref zonaEstudio);
+                    }
+                }   
+                catch
                 {
-                    recargarSelectPropietarios (ref zonaEstudio);
+                    TempData["mensaje"] = "<div class='alert alert-danger' role='alert'>Error al intentar guardar los datos de la zona de estudio</div>";
                 }
             }
             else
@@ -151,10 +160,12 @@ namespace SolucionCacao.Controllers
                 try
                 {
                     _context.Update(zonaEstudio);
+                    TempData["mensaje"] = "<div class='alert alert-success' role='alert'>La zona de estudio de "+nombre_propietario(zonaEstudio.IdPropietario)+" ha sido modificada correctamente</div>";
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
+                    TempData["mensaje"] = "<div class='alert alert-danger' role='alert'>Error al intentar editar los datos de la zona de estudio</div>";
                     if (!ZonaEstudioExists(zonaEstudio.Id))
                     {
                         return NotFound();
@@ -196,16 +207,29 @@ namespace SolucionCacao.Controllers
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var zonaEstudio = await _context.ZonaEstudios.FindAsync(id);
-            _context.ZonaEstudios.Remove(zonaEstudio);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                TempData["mensaje"] = "<div class='alert alert-success' role='alert'>La zona de estudio de "+nombre_propietario(zonaEstudio.IdPropietario)+" ha sido eliminada correctamente</div>";
+                _context.ZonaEstudios.Remove(zonaEstudio);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                TempData["mensaje"] = "<div class='alert alert-danger' role='alert'>Error al intentar eliminar los datos de la zona de estudio</div>";
+                return View(zonaEstudio);
+            }
         }
 
         private bool ZonaEstudioExists(string id)
         {
             return _context.ZonaEstudios.Any(e => e.Id.Equals(id));
         }
+
+        private string nombre_propietario(string id)
+        {
+            var prop = _context.Propietarios.Find(id);
+            return prop.Nombre;
+        }
     }
-
-
 }

@@ -1,12 +1,17 @@
 @model SolucionCacao.Models.ZonaEstudio
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Ingresar Zona de estudio";
 }
 
 
 <h3>Zona de Estudio</h3>
 <hr />
+@if(TempData["mensaje"] != null)
+{
+   @Html.Raw(TempData["mensaje"].ToString())
+   <hr>
+}
 
 <div class="row">
     <div class="col-md-4">
@@ -40,7 +45,7 @@
                 <span asp-validation-for="Densidad" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Crear" class="btn btn-primary" />
                 <a asp-action="Index" class="btn btn-outline-secondary">Regresar</a>
             </div>
         </form>
