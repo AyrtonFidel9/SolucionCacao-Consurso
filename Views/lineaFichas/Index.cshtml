@@ -11,10 +11,12 @@
 }
 
 <h1>Items</h1>  
-<p>
+<div>
     <a asp-action="Create" asp-route-id="@id" class="btn btn-primary">Agregar Nuevo Item</a>
-</p>
+    <a asp-action="cargarDatos" asp-route-id="@id" class="btn btn-outline-primary">Cargar datos</a>
+</div>
 <table class="table table-success table-striped table-bordered">
+    
     <thead>
         <tr>
             <th>
@@ -62,3 +64,4 @@
 }
     </tbody>
 </table>
+

@@ -1,12 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using CsvHelper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SolucionCacao.Models;
+using SolucionCacao.ViewModels;
 
 namespace SolucionCacao.Controllers
 {
@@ -26,6 +31,7 @@ namespace SolucionCacao.Controllers
         {
             var lineaFichasBus = _context.lineaFichas.Where(m => m.IdFicha.Equals(id));
             ViewData["IdFicha"] = id;
+            ViewData["Ficha"] = new SelectList(_context.Fichas.Where(t => t.Id.Equals(id)), "Id","NombreFicha");
             if (lineaFichasBus == null)
             {
                 return NotFound();
@@ -170,6 +176,62 @@ namespace SolucionCacao.Controllers
         private bool lineaFichasExists(string id)
         {
             return _context.lineaFichas.Any(e => e.Id == id);
+        }
+
+        [Authorize(Roles ="Admin, Tecnico")]
+        public IActionResult cargarDatos(string id)
+        {
+            ViewData["IdFicha"] = id;
+            ViewData["Ficha"] = new SelectList(_context.Fichas.Where(t => t.Id.Equals(id)), "Id","NombreFicha");
+
+            return View();
+        }
+
+        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles ="Admin, Tecnico")]
+        public async Task<ActionResult> cargarDatos(string IdFicha, IFormFile file, DateTime Fecha)
+        {
+            var lista = new List<itemsFichaViewModel>();
+            try
+            {
+                if(ModelState.IsValid)
+                {
+                    string fileName = Path.GetFileName(file.FileName);
+                    using (var reader =new StreamReader(file.OpenReadStream(), Encoding.Default))
+                    {
+                        /*string line;
+                        while ((line = reader.ReadLine()) != null)
+                        {
+                            Console.WriteLine(line);
+                        }*/
+                        using (var csv = new CsvReader(reader, System.Globalization.CultureInfo.CreateSpecificCulture("es-ES")))
+                        { 
+                            lista = csv.GetRecords<itemsFichaViewModel>().ToList();  
+                        }   
+                    }
+                    
+                    foreach (var indice in lista)
+                    {
+                        var items = new lineaFichas();
+                        items.Id = Guid.NewGuid().ToString();
+                        items.IdFicha = IdFicha;
+                        items.Arbol = indice.Arbol;
+                        items.Fruto = indice.Fruto;
+                        items.Incidencia = indice.Incidencia;
+                        items.Severidad = indice.Severidad;
+                        items.Fecha = Fecha;
+                        _context.Add(items);
+                        await _context.SaveChangesAsync();
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return RedirectToAction(nameof(Index), new {@id = IdFicha});
         }
     }
 }

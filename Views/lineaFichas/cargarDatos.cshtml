@@ -1,0 +1,38 @@
+@model SolucionCacao.Models.lineaFichas
+
+@{
+    ViewData["Title"] = "Cargar datos externos";
+    string id = Convert.ToString(ViewData["IdFicha"]);
+}
+<h3>Cargar datos externos</h3>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="cargarDatos" enctype="multipart/form-data" class="row g-3">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="IdFicha" class="control-label">Ficha</label>
+                <select asp-for="IdFicha" class="form-control" asp-items="(SelectList)@ViewData["Ficha"]"></select>
+                <span asp-validation-for="IdFicha" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="file">Archivo</label>
+                <input type="file" id="file" class="form-control" name="file" required>
+            </div>
+            <div class="form-group">
+                <label asp-for="Fecha" class="control-label"></label>
+                <input asp-for="Fecha" class="form-control" requiered />
+                <span asp-validation-for="Fecha" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Cargar" class="btn btn-primary"/>
+                <a asp-action="Index" asp-route-id="@id" class="btn btn-outline-secondary">Regresar a la Lista</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

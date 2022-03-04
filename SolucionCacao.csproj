@@ -4,6 +4,7 @@
 		<UserSecretsId>0a6d4c31-f6bc-4317-b5d8-2d232a2e80f8</UserSecretsId>
 	</PropertyGroup>
 	<ItemGroup>
+		<PackageReference Include="CsvHelper" Version="27.2.1" />
 		<PackageReference Include="FluentValidation.AspNetCore" Version="10.3.3" />
 		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.10" />
 		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.10" />
