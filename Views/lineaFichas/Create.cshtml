@@ -6,6 +6,11 @@
 }
 <h3>Crear item</h3>
 <hr />
+@if(TempData["mensaje"] != null)
+{
+   @Html.Raw(TempData["mensaje"].ToString())
+   <hr>
+}
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create" class="row g-3">

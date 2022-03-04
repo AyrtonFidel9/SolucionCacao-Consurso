@@ -18,12 +18,15 @@ namespace SolucionCacao.Models
         [ForeignKey("idFicha")]
         public string IdFicha {get; set;}
         [Required(ErrorMessage = "Campo Obligatorio")]
+        [RegularExpression("^[0-9]+$", ErrorMessage = "Solo se admiten números.")]
         public int? Arbol { get; set; }
         
         [Required(ErrorMessage = "Campo Obligatorio")]
-            public int? Fruto { get; set; }
+        [RegularExpression("^[0-9]+$", ErrorMessage = "Solo se admiten números.")]
+        public int? Fruto { get; set; }
         
         [Required(ErrorMessage = "Campo Obligatorio")]
+        [RegularExpression("^[0-9]+$", ErrorMessage = "Solo se admiten números.")]
         public int? Incidencia { get; set; }
         [Required(ErrorMessage = "Campo Obligatorio")]
         [Display(Name = "Severidad")]

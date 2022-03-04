@@ -6,6 +6,12 @@
 
 }
 
+@if(TempData["mensaje"] != null)
+{
+   @Html.Raw(TempData["mensaje"].ToString())
+   <hr>
+}
+
 <h3>¿Está seguro de eliminar este item?</h3>
 <div>
 

@@ -10,7 +10,12 @@
     }*/
 }
 
-<h1>Items</h1>  
+<h1>Items</h1>
+@if(TempData["mensaje"] != null)
+{
+   @Html.Raw(TempData["mensaje"].ToString())
+   <hr>
+}
 <div>
     <a asp-action="Create" asp-route-id="@id" class="btn btn-primary">Agregar Nuevo Item</a>
     <a asp-action="cargarDatos" asp-route-id="@id" class="btn btn-outline-primary">Cargar datos</a>

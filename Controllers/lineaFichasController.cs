@@ -31,7 +31,6 @@ namespace SolucionCacao.Controllers
         {
             var lineaFichasBus = _context.lineaFichas.Where(m => m.IdFicha.Equals(id));
             ViewData["IdFicha"] = id;
-            ViewData["Ficha"] = new SelectList(_context.Fichas.Where(t => t.Id.Equals(id)), "Id","NombreFicha");
             if (lineaFichasBus == null)
             {
                 return NotFound();
@@ -78,10 +77,18 @@ namespace SolucionCacao.Controllers
         {
             if (ModelState.IsValid)
             {
-                lineaFichas.Id = Guid.NewGuid().ToString();
-                _context.Add(lineaFichas);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index), new {@id = lineaFichas.IdFicha});
+                try
+                {               
+                    lineaFichas.Id = Guid.NewGuid().ToString();
+                    _context.Add(lineaFichas);
+                    await _context.SaveChangesAsync();
+                    TempData["mensaje"] = "<div class='alert alert-success' role='alert'>El item ha sido agregado correctamente</div>";
+                    return RedirectToAction(nameof(Index), new {@id = lineaFichas.IdFicha});
+                }
+                catch
+                {
+                    TempData["mensaje"] = "<div class='alert alert-danger' role='alert'>Ocurrio un error al agregar el item</div>";
+                }
             }
             return View(lineaFichas);
         }
@@ -124,11 +131,13 @@ namespace SolucionCacao.Controllers
             {
                 try
                 {
+                    TempData["mensaje"] = "<div class='alert alert-success' role='alert'>El item ha sido modificado correctamente</div>";
                     _context.Update(lineaFichas);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
+                    TempData["mensaje"] = "<div class='alert alert-danger' role='alert'>Ocurrio un error al modificar el item</div>";
                     if (!lineaFichasExists(lineaFichas.Id))
                     {
                         return NotFound();
@@ -168,9 +177,18 @@ namespace SolucionCacao.Controllers
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var lineaFichas = await _context.lineaFichas.FindAsync(id);
-            _context.lineaFichas.Remove(lineaFichas);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                _context.lineaFichas.Remove(lineaFichas);
+                await _context.SaveChangesAsync();
+                TempData["mensaje"] = "<div class='alert alert-success' role='alert'>El item ha sido eliminado correctamente</div>";
+                return RedirectToAction(nameof(Index), new {@id = lineaFichas.IdFicha});
+            }
+            catch
+            {
+                TempData["mensaje"] = "<div class='alert alert-danger' role='alert'>Ocurrio un error al modificar el item</div>";
+                return View(lineaFichas);
+            }
         }
 
         private bool lineaFichasExists(string id)
@@ -225,11 +243,12 @@ namespace SolucionCacao.Controllers
                         _context.Add(items);
                         await _context.SaveChangesAsync();
                     }
+                    TempData["mensaje"] = "<div class='alert alert-success' role='alert'>Los items han sido agregados correctamente</div>";
                 }
             }
             catch (Exception)
             {
-                throw;
+                TempData["mensaje"] = "<div class='alert alert-danger' role='alert'>Ocurrio un error al insertar los items en la ficha, revise los datos ingresados, recuerde que solo se aceptan archivos .csv</div>";
             }
             return RedirectToAction(nameof(Index), new {@id = IdFicha});
         }
