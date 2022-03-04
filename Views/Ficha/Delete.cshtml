@@ -4,6 +4,12 @@
     ViewData["Title"] = "Delete";
 }
 
+@if(TempData["mensaje"] != null)
+{
+   @Html.Raw(TempData["mensaje"].ToString())
+   <hr>
+}
+
 <h3>¿Está seguro de eliminar esta ficha?</h3>
 <div>
     <h4>Ficha</h4>

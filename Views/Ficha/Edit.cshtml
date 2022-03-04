@@ -6,6 +6,11 @@
 
 <h2>Editar ficha</h2>
 <hr />
+@if(TempData["mensaje"] != null)
+{
+   @Html.Raw(TempData["mensaje"].ToString())
+   <hr>
+}
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit" class="row g-3">

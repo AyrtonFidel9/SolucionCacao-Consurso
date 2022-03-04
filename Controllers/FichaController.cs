@@ -71,10 +71,38 @@ namespace SolucionCacao.Controllers
         {
             if (ModelState.IsValid)
             {
-                ficha.Id = Guid.NewGuid().ToString();
-                _context.Add(ficha);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    //validacion de que los selects se encuentren con asignados
+                    if (ficha.IdZona.Equals("Seleccione una Zona"))
+                    {
+                        TempData["mensaje"] = "<div class='alert alert-danger' role='alert'>Por favor, seleccione una zona de estudio</div>";
+                        ViewData["IdTecnico"] = new SelectList(_context.Tecnicos, "Id", "Nombres", ficha.IdTecnico);
+                        ViewData["IdZona"] = new SelectList(_context.ZonaEstudios, "Id", "Lugar", ficha.IdZona);
+                        return View(ficha);
+                    }
+
+                    if(ficha.IdTecnico.Equals("Seleccione un técnico"))
+                    {
+                        TempData["mensaje"] = "<div class='alert alert-danger' role='alert'>Por favor, seleccione un técnico responsable de la zona de estudio</div>";
+                        ViewData["IdTecnico"] = new SelectList(_context.Tecnicos, "Id", "Nombres", ficha.IdTecnico);
+                        ViewData["IdZona"] = new SelectList(_context.ZonaEstudios, "Id", "Lugar", ficha.IdZona);
+                        return View(ficha);
+                    }
+
+                    ficha.Id = Guid.NewGuid().ToString();
+                    _context.Add(ficha);
+                    await _context.SaveChangesAsync();
+                    TempData["mensaje"] = "<div class='alert alert-success' role='alert'>La Ficha ha sido generada correctamente</div>";
+                    return RedirectToAction(nameof(Index));
+                }
+                catch
+                {
+                    TempData["mensaje"] = "<div class='alert alert-danger' role='alert'>Error al intentar generar la ficha</div>";
+                    ViewData["IdTecnico"] = new SelectList(_context.Tecnicos, "Id", "Nombres", ficha.IdTecnico);
+                    ViewData["IdZona"] = new SelectList(_context.ZonaEstudios, "Id", "Lugar", ficha.IdZona);
+                    return View(ficha);
+                }
             }
             ViewData["IdTecnico"] = new SelectList(_context.Tecnicos, "Id", "Nombres", ficha.IdTecnico);
             ViewData["IdZona"] = new SelectList(_context.ZonaEstudios, "Id", "Lugar", ficha.IdZona);
@@ -89,7 +117,7 @@ namespace SolucionCacao.Controllers
             {
                 return NotFound();
             }
-
+            
             var ficha = await _context.Fichas.FindAsync(id);
             if (ficha == null)
             {
@@ -117,11 +145,29 @@ namespace SolucionCacao.Controllers
             {
                 try
                 {
+                     //validacion de que los selects se encuentren con asignados
+                    if (ficha.IdZona.Equals("Seleccione una Zona"))
+                    {
+                        TempData["mensaje"] = "<div class='alert alert-danger' role='alert'>Por favor, seleccione una zona de estudio</div>";
+                        ViewData["IdTecnico"] = new SelectList(_context.Tecnicos, "Id", "Nombres", ficha.IdTecnico);
+                        ViewData["IdZona"] = new SelectList(_context.ZonaEstudios, "Id", "Lugar", ficha.IdZona);
+                        return View(ficha);
+                    }
+
+                    if(ficha.IdTecnico.Equals("Seleccione un técnico"))
+                    {
+                        TempData["mensaje"] = "<div class='alert alert-danger' role='alert'>Por favor, seleccione un técnico responsable de la zona de estudio</div>";
+                        ViewData["IdTecnico"] = new SelectList(_context.Tecnicos, "Id", "Nombres", ficha.IdTecnico);
+                        ViewData["IdZona"] = new SelectList(_context.ZonaEstudios, "Id", "Lugar", ficha.IdZona);    
+                        return View(ficha);
+                    }
                     _context.Update(ficha);
+                    TempData["mensaje"] = "<div class='alert alert-success' role='alert'>La Ficha ha sido modificada correctamente</div>";
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
+                    TempData["mensaje"] = "<div class='alert alert-danger' role='alert'>Error al intentar modificar la ficha</div>";
                     if (!FichaExists(ficha.Id))
                     {
                         return NotFound();
@@ -165,11 +211,19 @@ namespace SolucionCacao.Controllers
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var ficha = await _context.Fichas.FindAsync(id);
-            _context.Fichas.Remove(ficha);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                _context.Fichas.Remove(ficha);
+                await _context.SaveChangesAsync();
+                TempData["mensaje"] = "<div class='alert alert-success' role='alert'>La Ficha ha sido eliminada correctamente</div>";
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                TempData["mensaje"] = "<div class='alert alert-danger' role='alert'>Error al intentar modificar la ficha</div>";
+                return View(ficha);
+            }
         }
-        
         private bool FichaExists(string id)
         {
             return _context.Fichas.Any(e => e.Id.Equals(id));
