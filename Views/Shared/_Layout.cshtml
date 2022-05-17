@@ -48,6 +48,10 @@
                                 asp-action="dashboard">Administración</a>
                             </li>
                         }
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-area="" asp-controller="Climas"
+                                asp-action="Index">Clima</a>
+                        </li>
                     </ul>
                     <ul class="navbar-nav">
                         @if (SignInManager.IsSignedIn(User))

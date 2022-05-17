@@ -1,0 +1,21 @@
+@model SolucionCacao.Models.Climas
+    
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="climaResult" class="row g-3">
+            <div class="form-group">
+                <label asp-for="Ciudad" class="control-label">Ingrese una ciudad</label>
+                <input asp-for="Ciudad" class="form-control" />
+                <span asp-validation-for="Ciudad" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Buscar" class="btn btn-primary" />
+                <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">Regresar</a>
+            </div>
+        </form>
+    </div>
+</div>
